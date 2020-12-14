@@ -1,12 +1,13 @@
 from googletrans import Translator
 
-translator = Translator(service_urls=['translate.google.com' ])
+translator = Translator(service_urls=['translate.googleapis.com' ])
 
 print("Started...")
 
 # function to read strings from en.js file to convert to other language
 def Translation(filename, toConvertintoLang, fromConvertLang):
     data=[]
+    print("Translation")
     with open(filename,'r') as reader:
         for line in reader.readlines():                      # reading lines
             if (line.find(":") != -1):                        #  lines containing strings
@@ -14,8 +15,9 @@ def Translation(filename, toConvertintoLang, fromConvertLang):
                     line = line.replace(",", "")
                     line = line.split(':')                      # splitting on the basis of semi-colon
                     keyName=line[0].strip()                     # keyname 
-                    stringValue = line[1].strip().replace("\"","")    # value
-                    translations = translator.translate(stringValue,toConvertintoLang,src=fromConvertLang)
+                    stringValue = line[1].strip().replace("\"", "")  # value
+                    print(stringValue,keyName, 'string value ------------')
+                    translations = translator.translate(text=stringValue,dest=toConvertintoLang,src=fromConvertLang)
                     print(translations.text)
                     print("\n\n")
                     data.append({keyName: translations.text})     # appending to data array
@@ -38,6 +40,6 @@ def WritingTranslationToOtherFile(filename):
 
 
 
-result = Translation("en.js", "ur","en")                     
-print(WritingTranslationToOtherFile("ur.js"))
+result = Translation("en.js", "es","en")                     
+print(WritingTranslationToOtherFile("es.js"))
                 
